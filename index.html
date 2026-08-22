@@ -1,1 +1,68 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Attendance Calculator</title><link rel="stylesheet" href="style.css"></head><body><main class="shell"><header><div><p class="eyebrow">BBA i-Connect · Semester 1</p><h1>Attendance Calculator</h1><p class="muted">Enter the hours you have missed. Everything else is calculated automatically.</p></div><button id="reset" class="ghost">Reset profile</button></header><section class="hero"><div><span class="pill">75% minimum</span><h2 id="welcome">Maanas's attendance.</h2><p>Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the calculator will show your attendance and how much more you can miss.</p></div><div class="hero-stat"><span>Profile</span><strong id="profileLabel">Maanas</strong></div></section><section class="profile-panel"><label for="profile">Profile</label><select id="profile"><option value="maanas">Maanas</option><option value="friend-a">Friend A</option><option value="friend-b">Friend B</option></select><span>Each profile has separate saved attendance figures.</span></section><section id="grid" class="grid"></section><footer><small>Figures are saved in this browser and are kept separate for each profile.</small></footer></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Attendance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">BBA i-Connect · Semester 1</p>
+        <h1>Attendance Tracker</h1>
+        <p class="muted" id="subtitle">Sign in with GitHub to access your attendance.</p>
+      </div>
+      <div class="header-actions">
+        <span id="userBadge" class="user-badge hidden"></span>
+        <button id="logout" class="ghost hidden">Log out</button>
+      </div>
+    </header>
+
+    <section id="loginPanel" class="hero login-panel">
+      <div>
+        <span class="pill">75% minimum</span>
+        <h2>Your attendance, your data.</h2>
+        <p>Sign in with GitHub. Your attendance figures are stored in Appwrite and are tied to your account, so changing devices or browsers won't reset them.</p>
+        <button id="login" class="primary">Continue with GitHub</button>
+      </div>
+      <div class="hero-stat">
+        <span>Secure profile</span>
+        <strong>GitHub</strong>
+      </div>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <section class="hero">
+        <div>
+          <span class="pill">75% minimum</span>
+          <h2 id="welcome">Your attendance.</h2>
+          <p>Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the tracker calculates your attendance automatically.</p>
+        </div>
+        <div class="hero-stat">
+          <span>Profile</span>
+          <strong id="profileLabel">—</strong>
+        </div>
+      </section>
+
+      <section id="moderatorPanel" class="profile-panel hidden">
+        <div>
+          <strong>Moderator mode</strong>
+          <span>You have access to the attendance records of users in the moderator team.</span>
+        </div>
+        <select id="userFilter">
+          <option value="self">My attendance</option>
+        </select>
+      </section>
+
+      <section id="grid" class="grid"></section>
+    </section>
+
+    <p id="message" class="message hidden"></p>
+    <footer><small>Attendance data is stored in Appwrite and access is controlled by your authenticated account.</small></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
