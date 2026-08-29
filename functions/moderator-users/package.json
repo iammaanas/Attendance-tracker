@@ -1,8 +1,0 @@
-{
-  "name": "attendance-moderator-users",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "node-appwrite": "^22.1.3"
-  }
-}
