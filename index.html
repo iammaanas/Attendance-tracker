@@ -4,36 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Attendance Tracker</title>
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=1">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
 </head>
 <body>
   <main class="shell">
     <header>
       <div>
-        <p class="eyebrow">BBA i-Connect · Semester 1</p>
+        <p class="eyebrow">BBA I-Connect · Semester 1</p>
         <h1>Attendance Tracker</h1>
-        <p class="muted" id="subtitle">Sign in to access your attendance.</p>
+        <p class="muted" id="subtitle">Sign in with GitHub to access your attendance.</p>
       </div>
       <div class="header-actions">
         <span id="userBadge" class="user-badge hidden"></span>
-        <button id="logout" class="ghost hidden">Log out</button>
+        <button id="logout" class="ghost hidden" type="button">Log out</button>
       </div>
     </header>
 
-    <section id="loginPanel" class="hero login-panel">
-      <div class="login-content">
-        <h2 id="authTitle">Welcome back.</h2>
-        <p id="authDescription">Sign in with your email and password, or continue with GitHub.</p>
-        <form id="authForm" class="auth-form">
-          <label>Email<input id="email" type="email" autocomplete="email" placeholder="you@example.com" required></label>
-          <label>Password<input id="password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters" required></label>
-          <label id="nameField" class="hidden">Name<input id="name" type="text" autocomplete="name" placeholder="Your name"></label>
-          <button id="emailSubmit" class="primary" type="submit">Sign in</button>
-        </form>
-        <div class="auth-divider"><span>or</span></div>
-        <button id="githubLogin" class="github-button" type="button">Continue with GitHub</button>
-        <button id="authToggle" class="text-button" type="button">Need an account? Create one</button>
+    <section id="loginPanel" class="hero">
+      <div>
+        <span class="pill">75% minimum</span>
+        <h2>Your attendance, your data.</h2>
+        <p>Sign in with GitHub. Your attendance figures are stored in Appwrite and tied to your account, so changing devices or browsers won't reset them.</p>
+        <button id="login" class="primary" type="button">Continue with GitHub</button>
+      </div>
+      <div class="hero-stat">
+        <span>Secure profile</span>
+        <strong>GitHub</strong>
       </div>
     </section>
 
@@ -42,10 +39,10 @@
         <div>
           <span class="pill">75% minimum</span>
           <h2 id="welcome">Your attendance.</h2>
-          <p id="heroDescription">Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the tracker calculates your attendance automatically.</p>
+          <p>Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the tracker calculates your attendance automatically.</p>
         </div>
         <div class="hero-stat">
-          <span id="profileTitle">Profile</span>
+          <span>Profile</span>
           <strong id="profileLabel">—</strong>
         </div>
       </section>
@@ -55,7 +52,6 @@
     <p id="message" class="message hidden"></p>
     <footer><small>Attendance data is stored in Appwrite and access is controlled by your authenticated account.</small></footer>
   </main>
-  <script src="app.js?v=10"></script>
-  <script src="settings.js?v=4"></script>
+  <script src="app.js?v=1"></script>
 </body>
 </html>
