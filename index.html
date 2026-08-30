@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Attendance Tracker</title>
-  <link rel="stylesheet" href="style.css?v=themes-login-1">
+  <link rel="stylesheet" href="style.css?v=login-polish-2">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
 </head>
 <body>
@@ -43,7 +43,7 @@
         </form>
         <div class="divider"><span>or</span></div>
         <button id="githubLogin" class="secondary" type="button">Continue with GitHub</button>
-        <button id="createAccount" class="create-link" type="button">Create a new account</button>
+        <p class="account-prompt">Don't have an account? <button id="createAccount" class="inline-link" type="button">Create one</button></p>
       </div>
       <div class="hero-stat"><span>Secure profile</span><strong>Appwrite</strong></div>
     </section>
@@ -60,7 +60,7 @@
           <label class="input-label">Confirm password<input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label>
           <button class="primary" type="submit">Create account</button>
         </form>
-        <button id="backToLogin" class="create-link" type="button">← Back to sign in</button>
+        <p class="account-prompt"><button id="backToLogin" class="inline-link" type="button">← Back to sign in</button></p>
       </div>
       <div class="hero-stat"><span>Account</span><strong>Appwrite</strong></div>
     </section>
@@ -76,6 +76,6 @@
     <p id="message" class="message hidden"></p>
     <footer><small>Attendance data is stored in Appwrite and access is controlled by your authenticated account.</small></footer>
   </main>
-  <script src="app.js?v=themes-login-1"></script>
+  <script src="app.js?v=login-polish-2"></script>
 </body>
 </html>
