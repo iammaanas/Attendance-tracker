@@ -23,7 +23,8 @@ const tables = new TablesDB(client);
 
 const loginPanel = document.getElementById('loginPanel');
 const appPanel = document.getElementById('appPanel');
-const loginButton = document.getElementById('login');
+const loginForm = document.getElementById('loginForm');
+const githubLoginButton = document.getElementById('githubLogin');
 const logoutButton = document.getElementById('logout');
 const userBadge = document.getElementById('userBadge');
 const subtitle = document.getElementById('subtitle');
@@ -52,7 +53,22 @@ async function getSession() {
   try { return await account.get(); } catch { return null; }
 }
 
-async function signIn() {
+async function signInWithEmail(event) {
+  event.preventDefault();
+  hideMessage();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  try {
+    await account.createEmailPasswordSession(email, password);
+    window.location.reload();
+  } catch (error) {
+    console.error(error);
+    showMessage(error.message || 'Email sign-in failed.', true);
+  }
+}
+
+async function signInWithGitHub() {
   hideMessage();
   try {
     const redirect = window.location.href.split('#')[0];
@@ -182,7 +198,8 @@ async function init() {
     if (!currentUser) {
       loginPanel.classList.remove('hidden');
       appPanel.classList.add('hidden');
-      loginButton.addEventListener('click', signIn);
+      loginForm?.addEventListener('submit', signInWithEmail);
+      githubLoginButton?.addEventListener('click', signInWithGitHub);
       return;
     }
 
