@@ -17,9 +17,6 @@ const subjects = [
   ['Personal Growth & Awareness Lab', 30], ['Lifestyle & Wellness Management', 30]
 ];
 
-const themes = ['aurora', 'forest', 'rose', 'ocean', 'graphite'];
-const themeNames = { aurora: 'Aurora', forest: 'Forest', rose: 'Rose', ocean: 'Ocean', graphite: 'Graphite' };
-
 const client = new Client().setEndpoint(CONFIG.endpoint).setProject(CONFIG.projectId);
 const account = new Account(client);
 const tables = new TablesDB(client);
@@ -34,10 +31,6 @@ const profileLabel = document.getElementById('profileLabel');
 const welcome = document.getElementById('welcome');
 const grid = document.getElementById('grid');
 const message = document.getElementById('message');
-const themePicker = document.getElementById('themePicker');
-const themeToggle = document.getElementById('themeToggle');
-const themeMenu = document.getElementById('themeMenu');
-const themeLabel = document.getElementById('themeLabel');
 
 let currentUser = null;
 let rows = [];
@@ -53,40 +46,6 @@ function showMessage(text, error = false) {
 
 function hideMessage() {
   message.className = 'message hidden';
-}
-
-function applyTheme(theme, persist = true) {
-  if (!themes.includes(theme)) theme = 'aurora';
-  document.documentElement.dataset.theme = theme;
-  themeLabel.textContent = themeNames[theme];
-  document.querySelectorAll('.theme-option').forEach(option => {
-    option.setAttribute('aria-pressed', String(option.dataset.theme === theme));
-  });
-  if (persist) localStorage.setItem('attendance-theme', theme);
-}
-
-function setupThemes() {
-  const saved = localStorage.getItem('attendance-theme') || 'aurora';
-  applyTheme(saved, false);
-  themePicker.classList.remove('hidden');
-  themeToggle.addEventListener('click', () => {
-    const open = !themeMenu.hidden;
-    themeMenu.hidden = open;
-    themeToggle.setAttribute('aria-expanded', String(!open));
-  });
-  document.querySelectorAll('.theme-option').forEach(option => {
-    option.addEventListener('click', () => {
-      applyTheme(option.dataset.theme);
-      themeMenu.hidden = true;
-      themeToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-  document.addEventListener('click', event => {
-    if (!themePicker.contains(event.target)) {
-      themeMenu.hidden = true;
-      themeToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
 }
 
 async function getSession() {
@@ -133,7 +92,12 @@ async function saveSubject(subject, value, row) {
   };
 
   if (row) {
-    await tables.updateRow({ databaseId: CONFIG.databaseId, tableId: CONFIG.tableId, rowId: row.$id, data });
+    await tables.updateRow({
+      databaseId: CONFIG.databaseId,
+      tableId: CONFIG.tableId,
+      rowId: row.$id,
+      data
+    });
   } else {
     await tables.createRow({
       databaseId: CONFIG.databaseId,
@@ -157,17 +121,33 @@ function buildCard(subject, totalHours, missed) {
 
   let status = 'safe';
   let label = 'SAFE';
-  if (attendance < 75) { status = 'danger'; label = 'BELOW 75%'; }
-  else if (canStillMiss <= 2) { status = 'warn'; label = 'CLOSE TO LIMIT'; }
+  if (attendance < 75) {
+    status = 'danger';
+    label = 'BELOW 75%';
+  } else if (canStillMiss <= 2) {
+    status = 'warn';
+    label = 'CLOSE TO LIMIT';
+  }
 
   const card = document.createElement('article');
   card.className = 'card';
   card.innerHTML = `
-    <div class="card-top"><div><h3>${subject}</h3><p>${fmt(totalHours)} total hours · ${fmt(required)} required</p></div><span class="status ${status}">${label}</span></div>
+    <div class="card-top">
+      <div>
+        <h3>${subject}</h3>
+        <p>${fmt(totalHours)} total hours · ${fmt(required)} required</p>
+      </div>
+      <span class="status ${status}">${label}</span>
+    </div>
     <div class="percent">${attendance.toFixed(1)}<small>%</small></div>
     <div class="bar"><i style="width:${Math.min(100, Math.max(0, attendance))}%"></i></div>
-    <div class="stats"><div><span>Hours missed</span><strong>${fmt(missed)} hrs</strong></div><div><span>Can still miss</span><strong>${fmt(Math.max(0, canStillMiss))} hrs</strong></div></div>
-    <label class="input-label">Hours missed<input type="number" min="0" max="${totalHours}" step="0.5" value="${missed}"></label>
+    <div class="stats">
+      <div><span>Hours missed</span><strong>${fmt(missed)} hrs</strong></div>
+      <div><span>Can still miss</span><strong>${fmt(Math.max(0, canStillMiss))} hrs</strong></div>
+    </div>
+    <label class="input-label">Hours missed
+      <input type="number" min="0" max="${totalHours}" step="0.5" value="${missed}">
+    </label>
   `;
 
   card.querySelector('input').addEventListener('change', async event => {
@@ -182,6 +162,7 @@ function buildCard(subject, totalHours, missed) {
       event.target.disabled = false;
     }
   });
+
   return card;
 }
 
@@ -195,15 +176,16 @@ async function render() {
 }
 
 async function init() {
-  setupThemes();
   try {
     currentUser = await getSession();
+
     if (!currentUser) {
       loginPanel.classList.remove('hidden');
       appPanel.classList.add('hidden');
       loginButton.addEventListener('click', signIn);
       return;
     }
+
     loginPanel.classList.add('hidden');
     appPanel.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
@@ -213,6 +195,7 @@ async function init() {
     profileLabel.textContent = currentUser.name || currentUser.$id;
     welcome.textContent = `${currentUser.name || 'Your'} attendance.`;
     logoutButton.addEventListener('click', signOut);
+
     await render();
   } catch (error) {
     console.error(error);
