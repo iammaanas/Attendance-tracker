@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Attendance Tracker</title>
-  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="style.css?v=2">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
 </head>
 <body>
@@ -17,6 +17,28 @@
       </div>
       <div class="header-actions">
         <span id="userBadge" class="user-badge hidden"></span>
+        <div class="theme-picker hidden" id="themePicker">
+          <button id="themeToggle" class="theme-toggle" type="button" aria-expanded="false" aria-controls="themeMenu">
+            <span class="theme-dot"></span><span id="themeLabel">Aurora</span> <span aria-hidden="true">⌄</span>
+          </button>
+          <div id="themeMenu" class="theme-menu" hidden role="listbox" aria-label="Choose colour scheme">
+            <button class="theme-option" type="button" data-theme="aurora" aria-pressed="true">
+              <span class="theme-colors"><i style="background:#031517"></i><i style="background:#073b3a"></i><i style="background:#42f5d0"></i><i style="background:#78ffe2"></i></span><span><span class="theme-name">Aurora</span><span class="theme-desc">Electric mint · luminous cyan</span></span>
+            </button>
+            <button class="theme-option" type="button" data-theme="forest" aria-pressed="false">
+              <span class="theme-colors"><i style="background:#041309"></i><i style="background:#0a321c"></i><i style="background:#31ed8c"></i><i style="background:#71ffb2"></i></span><span><span class="theme-name">Forest</span><span class="theme-desc">Emerald · jade · vivid richness</span></span>
+            </button>
+            <button class="theme-option" type="button" data-theme="rose" aria-pressed="false">
+              <span class="theme-colors"><i style="background:#160912"></i><i style="background:#321326"></i><i style="background:#ff78ad"></i><i style="background:#ff9fc5"></i></span><span><span class="theme-name">Rose</span><span class="theme-desc">Light pink · vibrant rose</span></span>
+            </button>
+            <button class="theme-option" type="button" data-theme="ocean" aria-pressed="false">
+              <span class="theme-colors"><i style="background:#03101b"></i><i style="background:#07304a"></i><i style="background:#24d9ff"></i><i style="background:#5fe8ff"></i></span><span><span class="theme-name">Ocean</span><span class="theme-desc">Deep teal · electric aqua</span></span>
+            </button>
+            <button class="theme-option" type="button" data-theme="graphite" aria-pressed="false">
+              <span class="theme-colors"><i style="background:#0c0e11"></i><i style="background:#20242a"></i><i style="background:#e1e6ed"></i><i style="background:#aeb8c4"></i></span><span><span class="theme-name">Graphite</span><span class="theme-desc">Silver monochrome · crisp</span></span>
+            </button>
+          </div>
+        </div>
         <button id="logout" class="ghost hidden" type="button">Log out</button>
       </div>
     </header>
@@ -52,6 +74,6 @@
     <p id="message" class="message hidden"></p>
     <footer><small>Attendance data is stored in Appwrite and access is controlled by your authenticated account.</small></footer>
   </main>
-  <script src="app.js?v=1"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
