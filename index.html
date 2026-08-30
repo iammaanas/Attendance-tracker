@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Attendance Tracker</title>
-  <link rel="stylesheet" href="style.css?v=stable-login">
+  <link rel="stylesheet" href="style.css?v=themes-login-1">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@23.0.0"></script>
 </head>
 <body>
@@ -17,6 +17,16 @@
       </div>
       <div class="header-actions">
         <span id="userBadge" class="user-badge hidden"></span>
+        <div id="themePicker" class="theme-picker hidden">
+          <button id="themeToggle" class="theme-toggle" type="button" aria-expanded="false" aria-controls="themeMenu"><span class="theme-dot"></span><span id="themeLabel">Aurora</span><span aria-hidden="true">⌄</span></button>
+          <div id="themeMenu" class="theme-menu" hidden>
+            <button class="theme-option" type="button" data-theme="aurora" aria-pressed="true"><span class="theme-colors"><i style="background:#031517"></i><i style="background:#073b3a"></i><i style="background:#42f5d0"></i><i style="background:#78ffe2"></i></span><span><b>Aurora</b><small>Electric mint · luminous cyan</small></span></button>
+            <button class="theme-option" type="button" data-theme="forest" aria-pressed="false"><span class="theme-colors"><i style="background:#041309"></i><i style="background:#0a321c"></i><i style="background:#31ed8c"></i><i style="background:#71ffb2"></i></span><span><b>Forest</b><small>Emerald · vivid jade</small></span></button>
+            <button class="theme-option" type="button" data-theme="rose" aria-pressed="false"><span class="theme-colors"><i style="background:#160912"></i><i style="background:#321326"></i><i style="background:#ff78ad"></i><i style="background:#ff9fc5"></i></span><span><b>Rose</b><small>Light pink · vibrant rose</small></span></button>
+            <button class="theme-option" type="button" data-theme="ocean" aria-pressed="false"><span class="theme-colors"><i style="background:#03101b"></i><i style="background:#07304a"></i><i style="background:#24d9ff"></i><i style="background:#5fe8ff"></i></span><span><b>Ocean</b><small>Deep teal · electric aqua</small></span></button>
+            <button class="theme-option" type="button" data-theme="graphite" aria-pressed="false"><span class="theme-colors"><i style="background:#0c0e11"></i><i style="background:#20242a"></i><i style="background:#e1e6ed"></i><i style="background:#aeb8c4"></i></span><span><b>Graphite</b><small>Silver monochrome · crisp</small></span></button>
+          </div>
+        </div>
         <button id="logout" class="ghost hidden" type="button">Log out</button>
       </div>
     </header>
@@ -24,38 +34,41 @@
     <section id="loginPanel" class="hero login-card">
       <div class="login-content">
         <span class="pill">75% minimum</span>
-        <h2>Your attendance, your data.</h2>
-        <p>Use your college account credentials to sign in. Your attendance figures are stored in Appwrite and tied to your account, so changing devices won't reset them.</p>
+        <h2>Welcome back.</h2>
+        <p>Sign in with your Appwrite account to view and update your attendance.</p>
         <form id="loginForm" class="login-form" autocomplete="on">
-          <label class="input-label">Email
-            <input id="email" name="email" type="email" autocomplete="username" required>
-          </label>
-          <label class="input-label">Password
-            <input id="password" name="password" type="password" autocomplete="current-password" required>
-          </label>
+          <label class="input-label">Email<input id="email" name="email" type="email" autocomplete="username" required></label>
+          <label class="input-label">Password<input id="password" name="password" type="password" autocomplete="current-password" required></label>
           <button id="login" class="primary" type="submit">Sign in</button>
         </form>
         <div class="divider"><span>or</span></div>
         <button id="githubLogin" class="secondary" type="button">Continue with GitHub</button>
-        <p class="login-note">New account? Use the Appwrite account created for you.</p>
+        <button id="createAccount" class="create-link" type="button">Create a new account</button>
       </div>
-      <div class="hero-stat">
-        <span>Secure profile</span>
-        <strong>Appwrite</strong>
+      <div class="hero-stat"><span>Secure profile</span><strong>Appwrite</strong></div>
+    </section>
+
+    <section id="createPanel" class="hero login-card hidden">
+      <div class="login-content">
+        <span class="pill">New account</span>
+        <h2>Create your account.</h2>
+        <p>Make your own Appwrite account, then use the same email and password to sign in on any device.</p>
+        <form id="createForm" class="login-form" autocomplete="on">
+          <label class="input-label">Name<input id="createName" name="name" type="text" autocomplete="name" required></label>
+          <label class="input-label">Email<input id="createEmail" name="email" type="email" autocomplete="email" required></label>
+          <label class="input-label">Password<input id="createPassword" name="password" type="password" autocomplete="new-password" minlength="8" required></label>
+          <label class="input-label">Confirm password<input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" minlength="8" required></label>
+          <button class="primary" type="submit">Create account</button>
+        </form>
+        <button id="backToLogin" class="create-link" type="button">← Back to sign in</button>
       </div>
+      <div class="hero-stat"><span>Account</span><strong>Appwrite</strong></div>
     </section>
 
     <section id="appPanel" class="hidden">
       <section class="hero">
-        <div>
-          <span class="pill">75% minimum</span>
-          <h2 id="welcome">Your attendance.</h2>
-          <p>Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the tracker calculates your attendance automatically.</p>
-        </div>
-        <div class="hero-stat">
-          <span>Profile</span>
-          <strong id="profileLabel">—</strong>
-        </div>
+        <div><span class="pill">75% minimum</span><h2 id="welcome">Your attendance.</h2><p>Each subject already has its total course hours. Update only <strong>Hours Missed</strong> and the tracker calculates your attendance automatically.</p></div>
+        <div class="hero-stat"><span>Profile</span><strong id="profileLabel">—</strong></div>
       </section>
       <section id="grid" class="grid"></section>
     </section>
@@ -63,6 +76,6 @@
     <p id="message" class="message hidden"></p>
     <footer><small>Attendance data is stored in Appwrite and access is controlled by your authenticated account.</small></footer>
   </main>
-  <script src="app.js?v=stable-login"></script>
+  <script src="app.js?v=themes-login-1"></script>
 </body>
 </html>
